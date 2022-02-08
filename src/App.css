@@ -1,38 +1,136 @@
+html {
+    background-color: #141212;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    text-align: center;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/*******HOME*********/
+.home_cards {
+    display: flex;
+    justify-content: space-between;
+    padding: 12vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.home_card {
+    width: 25%;
+    animation-duration: 3s;
+    animation-fill-mode: none;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }
+
+.home_card:hover {
+    animation-name: bounce;
+}
+
+/*******BOOKS*********/
+.book_cards {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 50px;
+    flex-grow: 1;
+
+}
+.book_card {
+    margin: 50px auto 0 auto;
+    width: 250px;
+    height: 500px;
+    animation-duration: 1.5s;
+    animation-fill-mode: none;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+}
+
+.book_card:hover {
+    animation-name: bounce;
+}
+
+.books_filter{
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.books_form{
+    display: flex;
+    flex-direction: row;
+}
+
+.books_filter_buttons{
+    justify-content: left;
+    width: 50%;
+    margin: auto 0 auto 0;
+}
+
+/*******BOOKS DETAILS*********/
+.card_info{
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+    height: fit-content;
+    margin: 50px auto 0 auto;
+}
+
+.accordion_div{
+    margin: 0 auto 0 auto;
+    width: 100%;
+}
+
+.presentation_div{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+.box_info{
+    width: 70%;
+    padding: 15px;
+}
+
+.book_infos{
+    text-align: left;
+    height: 50px;
+}
+
+/*******CHARACTERS*********/
+
+.pagination{
+    background-color: lightgrey;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+@keyframes bounce {
+    0%, 100%, 20%, 50%, 80% {
+        transform: translateY(0)
+    }
+    40% {
+        transform: translateY(-30px)
+    }
+    60% {
+        transform: translateY(-15px)
+    }
+}
+
+
+
+
+
+

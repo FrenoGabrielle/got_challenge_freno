@@ -1,0 +1,6 @@
+{
+  "baseURL" : "https://www.anapioficeandfire.com/api",
+  "books": "/books",
+  "characters": "/characters",
+  "houses": "/houses"
+}
