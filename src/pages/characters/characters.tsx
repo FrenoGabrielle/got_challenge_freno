@@ -26,7 +26,7 @@ const Characters = () => {
     //navbar
     const {brand, links} = navigation;
 
-    //to send the selected house to the details page
+    //to send the selected character to the details page
     let {characterId} = useParams();
     let navigate = useNavigate();
 
@@ -130,6 +130,7 @@ const Characters = () => {
         setCharacterName('');
         setGender('');
         setIsDead('');
+        setTotalPage(45);
 
     }
 
@@ -218,7 +219,7 @@ const Characters = () => {
                                             component="img"
                                             height="400"
                                             image={jon}
-                                            alt="book1"
+                                            alt="jon snow"
                                         />
                                         <CardContent>
                                             {b.name === '' ?

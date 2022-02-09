@@ -4,7 +4,17 @@ import {request, queryString, IBooks, navigation} from "../../utils/request";
 import {useNavigate, useParams} from "react-router-dom";
 import book1 from "../../images/books/book1.jpg";
 import NavigationBar from "../../navigation/navbar";
-import {Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography, Button} from "@mui/material";
+import {
+    Card,
+    CardActionArea,
+    CardContent,
+    CardMedia,
+    Grid,
+    TextField,
+    Typography,
+    Button,
+    InputLabel, Select, MenuItem, FormControl
+} from "@mui/material";
 
 
 //by default a book is empty
@@ -16,14 +26,13 @@ const Books = () => {
     //navbar
     const {brand, links} = navigation;
 
-    //to send the selected house to the details page
+    //to send the selected book to the details page
     let {bookId} = useParams();
     let navigate = useNavigate();
 
     //useState
     const [books, setBooks]: [IBooks[], (resources: IBooks[]) => void] = useState(defaultBooks);
     const [bookName, setBookName] = useState('');
-    const [year, setYear] = useState('');
 
     //get all books
     let getBooks = async () => {
@@ -54,7 +63,7 @@ const Books = () => {
         //return one book that has the same name that the input
         if (bookName !== undefined) {
             let c = await request(
-                //https://www.anapioficeandfire.com/api/houses?name=A Game of Thrones
+                //https://www.anapioficeandfire.com/api/book?name=A Game of Thrones
                 `${endpoints.baseURL}${endpoints.books}?name=${bookName}`,
                 'GET',
                 null
@@ -62,26 +71,15 @@ const Books = () => {
             //put result in array
             filteredBooks.push(c);
         }
-        //if user enters a year
-        //return all books that has a released date before or equal to the input
-        if (year !== '') {
-            let c = await request(
-                //https://www.anapioficeandfire.com/api/books?year=2005
-                `${endpoints.baseURL}${endpoints.books}?fromReleaseDate=${year}&pageSize=20`,
-                'GET',
-                null
-            );
-            filteredBooks.push(c);
-
-        }
 
         setBooks(filteredBooks[0]);
     }
 
+
+
     //function that reinitialize all the filters
     let resetFilters = () => {
         setBookName('');
-        setYear('');
     }
 
     //function to submit the search
@@ -96,8 +94,9 @@ const Books = () => {
             await getBooks();
         }
 
+
         fetchData();
-    }, [bookName])
+    }, [])
 
     return (
         <div className="content_bg">
@@ -109,26 +108,17 @@ const Books = () => {
                         <div className="books_filter">
                             <TextField id="filled-basic"
                                        color="error"
-                                       label="Books release before the date"
-                                       type="number"
-                                       variant="filled"
-                                       placeholder="2000"
-                                       style={{width: '45%'}}
-                                       onChange={(e) => setYear(e.target.value)}/>
-                            <TextField id="filled-basic"
-                                       color="error"
                                        label="Book's name"
                                        type="text"
                                        variant="filled"
                                        placeholder="A Game of Thrones"
-                                       style={{width: '45%'}}
+                                       style={{width: '100%'}}
                                        onChange={(e) => setBookName(e.target.value)}/>
                         </div>
                         <div className="books_filter_buttons">
                             <Button variant="contained" type="submit" color="success"
                                     style={{width: '30%', marginRight: '50px'}}>Search</Button>
-                            <Button variant="outlined" color="primary" onClick={resetFilters} style={{width: '30%'}}>Reset
-                                filters</Button>
+                            <Button variant="outlined" color="primary" onClick={resetFilters} style={{width: '30%'}}>Reset filters</Button>
                         </div>
                     </div>
                 </form>

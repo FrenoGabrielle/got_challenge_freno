@@ -36,7 +36,7 @@ const HousesDetails = () => {
     const {brand, links} = navigation;
 
     //to get params receive from Houses.tsx
-    let selectedBook = useLocation();
+    let selectedHouse = useLocation();
     let houseToDisplay: IHouses;
 
     //to send the selected house to the character page
@@ -44,7 +44,7 @@ const HousesDetails = () => {
     let navigate = useNavigate();
 
     //useState
-    const [house, setHouse]: [IHouses, (book: IHouses) => void] = useState(defaultHouse);
+    const [house, setHouse]: [IHouses, (house: IHouses) => void] = useState(defaultHouse);
     const [loading, setLoading]: [boolean, (loading: boolean) => void] = useState<boolean>(false);
     const [lord, setLord]: [ICharacters[], (resources: ICharacters[]) => void] = useState(defaultCharacters);
     const [heir, setHeir]: [ICharacters[], (resources: ICharacters[]) => void] = useState(defaultCharacters);
@@ -53,10 +53,10 @@ const HousesDetails = () => {
     const [cadetBranches, setCadetBranches]: [IHouses[], (resources: IHouses[]) => void] = useState([defaultHouse]);
     const [open, setOpen] = React.useState(true);
 
-    //get the book we received from House.tsx
+    //get the house we received from House.tsx
     let getHouse = async () => {
 
-        houseToDisplay = selectedBook.state as IHouses;
+        houseToDisplay = selectedHouse.state as IHouses;
 
         setHouse(houseToDisplay);
 
@@ -67,7 +67,7 @@ const HousesDetails = () => {
             getCharacters(houseToDisplay.overlord, "overlord");
             getSwornMembers(houseToDisplay.swornMembers);
             getCadetBranches(houseToDisplay.cadetBranches);
-        }, 2000);
+        }, 1000);
         return () => clearTimeout(timer);
     }
 
@@ -164,15 +164,6 @@ const HousesDetails = () => {
     }
 
 
-    //function to go to House's details
-    //param : type = IHouse => the selected house
-    let seeDetailsHouse = async (house: IHouses) => {
-        //get the id to get the correct url
-        id = await queryString(house.url);
-        //move to the details page & send the selected character
-        navigate(`./houses/${id}`, {state: house});
-    }
-
     //function to go to characters's details
     //param : type = ICharacters => the selected character
     let seeDetailsCharacter = async (character: ICharacters) => {
@@ -193,7 +184,7 @@ const HousesDetails = () => {
         const timer = setTimeout(() => {
             setLoading(true);
             setOpen(false);
-        }, 5000);
+        }, 2000);
         return () => clearTimeout(timer);
 
     }, []);
@@ -257,7 +248,7 @@ const HousesDetails = () => {
                                 </Box>
                             </div>
                             <div>
-                                <img src={stark} alt="book1" style={{width: '100%', height: '400px'}}/>
+                                <img src={stark} alt="stark" style={{width: '100%', height: '400px'}}/>
                             </div>
                         </div>
                         <div className="accordion_div">

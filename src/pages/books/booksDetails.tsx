@@ -44,7 +44,7 @@ const BooksDetails = () => {
     let selectedBook = useLocation();
     let bookToDisplay: IBooks;
 
-    //to send the selected house to the details page
+    //to send the selected character to the details page
     let {characterId} = useParams();
     let navigate = useNavigate();
 
@@ -65,7 +65,7 @@ const BooksDetails = () => {
         const timer = setTimeout(() => {
             getCharacters(bookToDisplay.characters);
             getPovCharacters(bookToDisplay.povCharacters, "pov");
-        }, 8000);
+        }, 2000);
         return () => clearTimeout(timer);
     }
 
@@ -146,7 +146,7 @@ const BooksDetails = () => {
         const timer = setTimeout(() => {
             setLoading(true);
             setOpen(false);
-        }, 10000);
+        }, 4000);
         return () => clearTimeout(timer);
 
     }, [])

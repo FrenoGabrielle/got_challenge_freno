@@ -139,7 +139,6 @@ const Register = () => {
 
         user.push(t);
         localStorage.setItem("users", JSON.stringify(user));
-        localStorage.setItem("currentUser", JSON.stringify(t));
         console.log(user);
 
 

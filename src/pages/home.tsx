@@ -6,7 +6,7 @@ import character from '../images/home/characters.jpg';
 import '../App.css';
 import {navigation} from "../utils/request";
 import NavigationBar from "../navigation/navbar";
-import {Card, CardActionArea, CardContent, CardMedia, Typography} from "@mui/material";
+import {Button, Card, CardActionArea, CardContent, CardMedia, TextField, Typography} from "@mui/material";
 
 
 const Home = () => {

@@ -2,27 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1cdbdb60-1db2-4024-8de1-9e18a1e7f85d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/context/userContext.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/characters/jon_snow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/game-of-thrones-logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/characters/jon_snow.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/navigation/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigation/navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/login.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/userContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/userContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/books/books.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/books/books.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/books/booksDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/books/booksDetails.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/characters/characters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/characters/characters.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/characters/charactersDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/characters/charactersDetails.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/houses/houses.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/houses/houses.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/houses/housesDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/houses/housesDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/login/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/request.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/request.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +70,9 @@
       <workItem from="1644302570944" duration="9817000" />
       <workItem from="1644312501948" duration="8171000" />
       <workItem from="1644324308682" duration="36121000" />
-      <workItem from="1644388081497" duration="38897000" />
+      <workItem from="1644388081497" duration="42547000" />
+      <workItem from="1644433873695" duration="34000" />
+      <workItem from="1644434061274" duration="1186000" />
     </task>
     <task id="LOCAL-00001" summary="Main functionalities - display data + filter">
       <created>1644356244644</created>
@@ -89,7 +81,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644356244644</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="login + UI">
+      <created>1644429535634</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1644429535635</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -98,6 +97,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Main functionalities - display data + filter" />
-    <option name="LAST_COMMIT_MESSAGE" value="Main functionalities - display data + filter" />
+    <MESSAGE value="login + UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="login + UI" />
   </component>
 </project>

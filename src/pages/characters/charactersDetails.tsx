@@ -76,7 +76,7 @@ const CharactersDetails = () => {
             getBooks(characterToDisplay.books);
             getPovCharacters(characterToDisplay.povBooks);
             getHouses(characterToDisplay.allegiances);
-        }, 5000);
+        }, 2000);
         return () => clearTimeout(timer);
     }
 
@@ -183,15 +183,6 @@ const CharactersDetails = () => {
         navigate(`../books/${id}`, {state: book});
     }
 
-    //function to go to character's details
-    //param : type = ICharacters => the selected character
-    let seeDetailsCharacter = async (character: ICharacters) => {
-        //get the id to get the correct url
-        id = await queryString(character.url);
-        //move to the details page & send the selected character
-        navigate(`../characters/${id}`, {state: character});
-
-    }
 
     //function to go to House's details
     //param : type = IHouse => the selected house
@@ -215,7 +206,7 @@ const CharactersDetails = () => {
         const timer = setTimeout(() => {
             setLoading(true);
             setOpen(false);
-        }, 8000);
+        }, 4000);
         return () => clearTimeout(timer);
 
     }, [])
