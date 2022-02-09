@@ -23,7 +23,4 @@ UC4 : get the details of each items
   - each item has a detail page
   - details pages are linked
   
-  
-To Log in, you can use : username : test / password : 1234 or create your own user.
-  
 
