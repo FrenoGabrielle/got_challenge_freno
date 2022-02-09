@@ -1,82 +1,95 @@
 import React, {useEffect, useState} from 'react';
 import endpoints from "../../utils/endpoints.json";
-import request from "../../utils/request";
-import Button from "@material-ui/core/Button";
+import {request, queryString, IBooks, navigation} from "../../utils/request";
 import {useNavigate, useParams} from "react-router-dom";
-import {
-    Box,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardMedia,
-    Grid,
-    Input,
-    Paper,
-    styled, TextField,
-    Typography
-} from "@material-ui/core";
 import book1 from "../../images/books/book1.jpg";
-import {Item} from "framer-motion/types/components/Reorder/Item";
+import NavigationBar from "../../navigation/navbar";
+import {Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography, Button} from "@mui/material";
 
 
-interface IBooks {
-    url: string;
-    name: string;
-    isbn: string;
-    authors: string[];
-    numberOfPages: number;
-    publisher: string;
-    country: string;
-    mediaType: string;
-    released: Date;
-    characters: string[];
-    povCharacters: string[];
-
-}
-
+//by default a book is empty
 const defaultBooks: IBooks[] = [];
 
 
 const Books = () => {
 
-    const [books, setBooks]: [IBooks[], (resources: IBooks[]) => void] = useState(defaultBooks);
-    const [allBooks, setAllBooks]: [IBooks[], (resources: IBooks[]) => void] = useState(defaultBooks);
-    const [loading, setLoading]: [boolean, (loading: boolean) => void] = React.useState<boolean>(true);
-    const [error, setError]: [string, (error: string) => void] = React.useState('');
+    //navbar
+    const {brand, links} = navigation;
 
-    const [term, setTerm] = useState('');
+    //to send the selected house to the details page
+    let {bookId} = useParams();
+    let navigate = useNavigate();
+
+    //useState
+    const [books, setBooks]: [IBooks[], (resources: IBooks[]) => void] = useState(defaultBooks);
+    const [bookName, setBookName] = useState('');
     const [year, setYear] = useState('');
 
+    //get all books
     let getBooks = async () => {
         let b = await request(
+            //https://www.anapioficeandfire.com/api/books?pageSize=20
             `${endpoints.baseURL}${endpoints.books}?pageSize=20`,
             'GET',
             null
         );
+        setBooks(b);
+    }
 
-        if (b && b.length > 0) {
-            setBooks(b);
-            setAllBooks(b);
+    //function to see details of the selected character
+    //param : type = IBooks => the selected book
+    let seeDetails = async (book: IBooks) => {
+        //get the id to get the correct url
+        bookId = await queryString(book.url);
+        //move to the details page & send the selected character
+        navigate(`./${bookId}`, {state: book});
+    }
+
+    //function to filter books
+    //filter by name either by release date
+    let filterBooks = async () => {
+
+        let filteredBooks = [];
+        //if user enters a name
+        //return one book that has the same name that the input
+        if (bookName !== undefined) {
+            let c = await request(
+                //https://www.anapioficeandfire.com/api/houses?name=A Game of Thrones
+                `${endpoints.baseURL}${endpoints.books}?name=${bookName}`,
+                'GET',
+                null
+            );
+            //put result in array
+            filteredBooks.push(c);
+        }
+        //if user enters a year
+        //return all books that has a released date before or equal to the input
+        if (year !== '') {
+            let c = await request(
+                //https://www.anapioficeandfire.com/api/books?year=2005
+                `${endpoints.baseURL}${endpoints.books}?fromReleaseDate=${year}&pageSize=20`,
+                'GET',
+                null
+            );
+            filteredBooks.push(c);
+
         }
 
+        setBooks(filteredBooks[0]);
     }
 
-    let {bookId} = useParams();
-    let navigate = useNavigate();
-
-    //function that get book's id from the url
-    let parseQueryString = (queryString: string): any => {
-        let queries = queryString.split("/");
-        let key = queries[queries.length - 1];
-        return key;
+    //function that reinitialize all the filters
+    let resetFilters = () => {
+        setBookName('');
+        setYear('');
     }
 
-    let seeDetails = (book: IBooks) => {
-        bookId = parseQueryString(book.url);
-        navigate(`./${bookId}`, {state: book});
-
+    //function to submit the search
+    const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
+        // Preventing the page from reloading
+        event.preventDefault();
+        filterBooks();
     }
-
 
     useEffect(() => {
         async function fetchData() {
@@ -84,64 +97,42 @@ const Books = () => {
         }
 
         fetchData();
-    }, [])
-
-    let filterBooks = () => {
-        let filteredBooks = [];
-        if (term !== undefined) {
-            filteredBooks.push(allBooks.filter(h => String(h.name.toLowerCase()).includes(term.toLowerCase())));
-        }
-        if (year !== '') {
-            filteredBooks.push(allBooks.filter(h => Number(h.released) === Number(year)));
-        }
-
-        console.log(filteredBooks[0]);
-
-        setBooks(filteredBooks[0]);
-    }
-
-    let resetFilters = () => {
-        window.location.reload();
-    }
-
-
-    const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
-        // Preventing the page from reloading
-        event.preventDefault();
-        filterBooks();
-
-
-    }
-
-
+    }, [bookName])
 
     return (
-        <div>
-            <h1>Books</h1>
-            <form onSubmit={submitForm}>
-                <div className="books_form">
-                    <div className="books_filter">
-                        <TextField id="filled-basic"
-                                   label="Released date"
-                                   type="number"
-                                   variant="filled"
-                                   placeholder="2000"
-                                   style={{width:'45%'}}
-                                   onChange={(e) => setYear(e.target.value)}/>
-                        <TextField id="filled-basic"
-                                   label="Book's name"
-                                   type="text"
-                                   variant="filled"
-                                   placeholder="A Game of Thrones"
-                                   style={{width:'45%'}}
-                                   onChange={(e) => setTerm(e.target.value)}/>
+        <div className="content_bg">
+            <NavigationBar brand={brand} links={links}/>
+            <div className="form_bg">
+                <h1>Books</h1>
+                <form onSubmit={submitForm}>
+                    <div className="books_form">
+                        <div className="books_filter">
+                            <TextField id="filled-basic"
+                                       color="error"
+                                       label="Books release before the date"
+                                       type="number"
+                                       variant="filled"
+                                       placeholder="2000"
+                                       style={{width: '45%'}}
+                                       onChange={(e) => setYear(e.target.value)}/>
+                            <TextField id="filled-basic"
+                                       color="error"
+                                       label="Book's name"
+                                       type="text"
+                                       variant="filled"
+                                       placeholder="A Game of Thrones"
+                                       style={{width: '45%'}}
+                                       onChange={(e) => setBookName(e.target.value)}/>
+                        </div>
+                        <div className="books_filter_buttons">
+                            <Button variant="contained" type="submit" color="success"
+                                    style={{width: '30%', marginRight: '50px'}}>Search</Button>
+                            <Button variant="outlined" color="primary" onClick={resetFilters} style={{width: '30%'}}>Reset
+                                filters</Button>
+                        </div>
                     </div>
-                    <div className="books_filter_buttons">
-                        <Button variant="contained" type="submit" style={{width:'30%', marginRight: '50px'}}>Search</Button>
-                        <Button variant="outlined" onClick={resetFilters} style={{width:'30%'}}>Reset filters</Button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <div className="book_cards">
                 <Grid container spacing={3}>
                     {books.map((b) => (
@@ -153,6 +144,7 @@ const Books = () => {
                                             height="400"
                                             image={book1}
                                             alt="book1"
+
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="h5" component="div">

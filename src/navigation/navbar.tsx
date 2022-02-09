@@ -20,17 +20,17 @@ const Theme = {
         bg: `#fff`,
         dark: `#24292e`,
         light: `#EEEEEE`,
-        red: `#ff5851`,
+        yellow: `#f8ac00`,
     },
     fonts: {
         body: `IBM Plex Sans, sans-serif`,
-        heading: `IBM Plex Sans, sans-serif`,
+        heading: `Copperplate Gothic Bold`,
     }
 }
 
 const Navbar = styled.nav`
-  background: ${Theme.colors.dark};
-  font-family: ${Theme.fonts.heading};
+  background: ${Theme.colors.yellow};
+  font-family: ${Theme.fonts.body};
   color: ${Theme.colors.light};
   display: flex;
   align-items: center;
@@ -38,7 +38,7 @@ const Navbar = styled.nav`
 
 
   a {
-    color: white;
+    color: #3e3e3e;
     text-decoration: none;
     margin-right: 3rem;
     -webkit-transition: font-size .5s ease;
@@ -48,15 +48,15 @@ const Navbar = styled.nav`
   }
 
 a:hover{
-  font-size: 20px;
+  font-size: 24px;
 }
 `;
-
-
 
 const Brand = styled.a`
   font-weight: bold;
   margin-left: 1rem;
+  font-family: ${Theme.fonts.heading};
+  font-size: 24px;
   padding-right: 3rem;`;
 
 

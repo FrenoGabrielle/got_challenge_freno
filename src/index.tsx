@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {createTheme, ThemeProvider} from '@material-ui/core/styles';
-import {purple, green} from "@material-ui/core/colors";
+
 
 const theme = createTheme({
     palette:{

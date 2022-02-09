@@ -1,5 +1,5 @@
 html {
-    background-color: #141212;
+    background: linear-gradient(180deg, rgba(20,18,18,1) 49%, rgba(0,0,0,1) 100%);
 }
 
 .App {
@@ -17,11 +17,33 @@ html {
     color: white;
 }
 
+/*******LOGIN&REGISTER*********/
+
+.login_form{
+    width: 50%;
+    margin: 100px auto;
+}
+
+.login_div{
+    width: 50%;
+    background: linear-gradient(180deg, rgba(150,146,146,1) 0%, rgba(255,255,255,1) 50%, rgba(156,153,153,1) 100%);
+    padding: 10px;
+}
+
+.login_buttons{
+    width: 100%;
+}
+
+.login_container{
+    display: flex;
+    flex-direction: row;
+}
+
 /*******HOME*********/
 .home_cards {
     display: flex;
     justify-content: space-between;
-    padding: 12vh;
+    padding: 30px 100px;
 }
 
 .home_card {
@@ -30,11 +52,20 @@ html {
     animation-fill-mode: none;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    background: linear-gradient(180deg, rgba(150,146,146,1) 0%, rgba(255,255,255,1) 50%, rgba(156,153,153,1) 100%);
 }
 
 .home_card:hover {
     animation-name: bounce;
 }
+
+.intro_card{
+    width: 70%;
+    height: 150px;
+    margin: 50px auto;
+    background: linear-gradient(180deg, rgba(150,146,146,1) 0%, rgba(255,255,255,1) 50%, rgba(156,153,153,1) 100%);
+}
+
 
 /*******BOOKS*********/
 .book_cards {
@@ -78,13 +109,28 @@ html {
     margin: auto 0 auto 0;
 }
 
+
+.form_bg{
+    padding-top: 15px;
+    background: linear-gradient(180deg, rgba(150,146,146,1) 0%, rgba(255,255,255,1) 50%, rgba(156,153,153,1) 100%);
+}
+
+.content_bg{
+    background: linear-gradient(180deg, rgba(20,18,18,1) 49%, rgba(0,0,0,1) 100%);
+}
+
 /*******BOOKS DETAILS*********/
+.div_details{
+    min-height: 940px;
+}
 .card_info{
     display: flex;
     flex-wrap: wrap;
-    width: 70%;
+    width: 60%;
     height: fit-content;
     margin: 50px auto 0 auto;
+
+
 }
 
 .accordion_div{
@@ -97,15 +143,18 @@ html {
     flex-direction: row;
     width: 100%;
     height: fit-content;
+    background-color: #e2e2e2;
 }
 .box_info{
-    width: 70%;
+    width: 60%;
     padding: 15px;
+    background-color: #e2e2e2;
 }
 
 .book_infos{
     text-align: left;
     height: 50px;
+    border-bottom: gray;
 }
 
 /*******CHARACTERS*********/

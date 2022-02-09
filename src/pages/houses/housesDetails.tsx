@@ -1,36 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useLocation, useNavigate, useParams} from 'react-router-dom';
-import request from "../../utils/request";
-import endpoints from "../../utils/endpoints.json";
-import Button from "@material-ui/core/Button";
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {request, IHouses, ICharacters, queryString, navigation} from "../../utils/request";
 import {Accordion, AccordionDetails, AccordionSummary, Box, Card, ListItem, Typography} from "@material-ui/core";
-import {Grid, List, ListItemText} from "@mui/material";
+import {Backdrop, CircularProgress, Grid, Link, List, ListItemText} from "@mui/material";
 import stark from "../../images/houses/stark.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import NavigationBar from "../../navigation/navbar";
 
-
-interface IHouse {
-    url: string;
-    name: string;
-    region: string;
-    coatOfArms: string;
-    words: string;
-    titles: string[];
-    seats: string[];
-    currentLord: string;
-    heir: string;
-    overlord: string;
-    founded: string;
-    founder: string;
-    diedOut: string;
-    ancestralWeapons: string[];
-    cadetBranches: string[];
-    swornMembers: string[];
-
-}
-
-
-const defaultHouse: IHouse = {
+//by default, house fields are unknown
+const defaultHouse: IHouses = {
     url: 'Unknown',
     name: 'Unknown',
     region: 'Unknown',
@@ -49,95 +27,125 @@ const defaultHouse: IHouse = {
     swornMembers: []
 };
 
-interface ICharacters {
-    url: string;
-    name: string;
-    gender: string;
-    culture: string;
-    born: string;
-    died: string;
-    titles: string[];
-    aliases: string[];
-    father: string;
-    mother: string;
-    allegiances: string[];
-    books: string[];
-    povBooks: string[];
-    tvSeries: string[];
-    playedBy: string[];
-}
-
+//by default a character is empty
 const defaultCharacters: ICharacters[] = [];
 
 const HousesDetails = () => {
 
+    //navbar
+    const {brand, links} = navigation;
 
-    let {houseId} = useParams();
+    //to get params receive from Houses.tsx
     let selectedBook = useLocation();
-    let test: IHouse;
+    let houseToDisplay: IHouses;
+
+    //to send the selected house to the character page
+    let {id} = useParams();
     let navigate = useNavigate();
 
-    const [house, setHouse]: [IHouse, (book: IHouse) => void] = useState(defaultHouse);
+    //useState
+    const [house, setHouse]: [IHouses, (book: IHouses) => void] = useState(defaultHouse);
     const [loading, setLoading]: [boolean, (loading: boolean) => void] = useState<boolean>(false);
     const [lord, setLord]: [ICharacters[], (resources: ICharacters[]) => void] = useState(defaultCharacters);
     const [heir, setHeir]: [ICharacters[], (resources: ICharacters[]) => void] = useState(defaultCharacters);
     const [overlord, setOverlord]: [ICharacters[], (resources: ICharacters[]) => void] = useState(defaultCharacters);
     const [swornMembers, setSwornMembers]: [ICharacters[], (resources: ICharacters[]) => void] = useState(defaultCharacters);
-    const [cadetBranches, setCadetBranches]: [IHouse[], (resources: IHouse[]) => void] = useState([defaultHouse]);
+    const [cadetBranches, setCadetBranches]: [IHouses[], (resources: IHouses[]) => void] = useState([defaultHouse]);
+    const [open, setOpen] = React.useState(true);
 
+    //get the book we received from House.tsx
+    let getHouse = async () => {
 
+        houseToDisplay = selectedBook.state as IHouses;
+
+        setHouse(houseToDisplay);
+
+        //call some function to get all data
+        const timer = setTimeout(() => {
+            getCharacters(houseToDisplay.currentLord, "lord");
+            getCharacters(houseToDisplay.heir, "heir");
+            getCharacters(houseToDisplay.overlord, "overlord");
+            getSwornMembers(houseToDisplay.swornMembers);
+            getCadetBranches(houseToDisplay.cadetBranches);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }
+
+    //get all Characters we need to display in details
+    //param : url = string => character url
     let getCharacters = async (url: string, characterType: string) => {
+
         let c = await request(
+            //https://www.anapioficeandfire.com/api/characters/12
             url,
             'GET',
             null
         );
 
+        //actions in function of the character type
         switch (characterType) {
             case "lord": {
-                setLord(c.name);
+                if (lord === undefined) {
+                    setLord(defaultCharacters);
+                } else {
+                    setLord(c.name);
+                }
                 break;
             }
             case "heir": {
-                setHeir(c.name);
+                if (heir === undefined) {
+                    setHeir(defaultCharacters);
+                } else {
+                    setHeir(c.name);
+                }
                 break;
             }
             case "overlord": {
-                setOverlord(c.name);
-                break;
-            }
-            default: {
-                setOverlord(c.name);
+                if (overlord === undefined) {
+                    setOverlord(defaultCharacters);
+                } else {
+                    setOverlord(c.name);
+                }
                 break;
             }
         }
-
     }
 
+    //get all sworn Members we need to display in details
+    //param : urls = string[] => array with sworn members urls
     let getSwornMembers = async (urls: string[]) => {
+
         let swornM = [];
-        for (let i = 0; i < urls.length; i++) {
+
+
+        //Because of the number of character, we only get 10 characters
+        let length = 0;
+
+        if (urls.length > 11) {
+            length = 10;
+        } else {
+            length = urls.length;
+        }
+
+        for (let i = 0; i < length; i++) {
             let c = await request(
                 urls[i],
                 'GET',
                 null
             );
-
-            swornM.push(c.name);
-            swornM.sort((a, b) => {
-                return a.localeCompare(b);
-            });
-
-
+            //put result in array
+            swornM.push(c);
         }
-
         setSwornMembers(swornM);
 
     }
 
+    //get all cadet branches we need to display in details
+    //param : urls = string[] => array with cadet branches urls
     let getCadetBranches = async (urls: string[]) => {
 
         let cadetB = [];
+
         for (let i = 0; i < urls.length; i++) {
             let c = await request(
                 urls[i],
@@ -147,41 +155,44 @@ const HousesDetails = () => {
             if (c === undefined) {
                 cadetB.push(defaultHouse);
             } else {
-                cadetB.push(c.name);
+                //put result in array
+                cadetB.push(c);
             }
+            console.log(c);
         }
-        setCadetBranches(cadetB);
 
     }
 
 
-    let getHouse = async () => {
-
-        test = selectedBook.state as IHouse;
-
-        setHouse(test);
-        console.log(test);
-
-        console.log(test.name);
-
-        const timer = setTimeout(() => {
-            getCharacters(test.currentLord, "lord");
-            getCharacters(test.heir, "heir");
-            getCharacters(test.overlord, "overlord");
-            getSwornMembers(test.swornMembers);
-            getCadetBranches(test.cadetBranches);
-        }, 2000);
-        return () => clearTimeout(timer);
-
+    //function to go to House's details
+    //param : type = IHouse => the selected house
+    let seeDetailsHouse = async (house: IHouses) => {
+        //get the id to get the correct url
+        id = await queryString(house.url);
+        //move to the details page & send the selected character
+        navigate(`./houses/${id}`, {state: house});
     }
 
+    //function to go to characters's details
+    //param : type = ICharacters => the selected character
+    let seeDetailsCharacter = async (character: ICharacters) => {
+        //get the id to get the correct url
+        id = await queryString(character.url);
+        //move to the details page & send the selected character
+        navigate(`./characters/${id}`, {state: character});
+
+    }
 
     useEffect(() => {
-        getHouse();
+        async function fetchData() {
+            await getHouse();
+        }
 
+        fetchData();
+        //timer to get data
         const timer = setTimeout(() => {
             setLoading(true);
-
+            setOpen(false);
         }, 5000);
         return () => clearTimeout(timer);
 
@@ -189,54 +200,58 @@ const HousesDetails = () => {
 
 
     return (
-        <div>
+        <div className="div_details">
+            <NavigationBar brand={brand} links={links}/>
             {loading ?
                 <>
                     <Card className="card_info">
                         <div className="presentation_div">
                             <div className="box_info">
                                 <Box sx={{flexGrow: 1}}>
-                                    <Grid container spacing={7}>
+                                    <Grid container spacing={1} style={{height: 'fit-content'}}>
                                         <Grid item xs={12} className="book_infos"
                                               style={{textAlign: 'center', fontSize: '24px', marginBottom: '20px'}}>
-                                            <p>{house.name}</p>
+                                            <b>{house.name}</b>
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Region : {house.region}</p>
+                                            <b>Region : </b>{house.region}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Titles : {house.titles}</p>
+                                            <b>Seats : </b>{house.seats}
                                         </Grid>
+
                                         <Grid item xs={12} className="book_infos">
-                                            <p>Coat of Arm : {house.coatOfArms}</p>
+                                            <b>Coat of Arm : </b>{house.coatOfArms}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Words : {house.words}</p>
+                                            <b>Words : </b>{house.words}
                                         </Grid>
 
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Seats : {house.seats}</p>
+                                            <b>Current Lord : </b>{lord}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Current Lord : {lord}</p>
+                                            <b>Heir : </b>{heir}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Heir : {heir}</p>
+                                            <b>Overlord : </b>{overlord}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Overlord : {overlord}</p>
+                                            <b>Founded : </b>{house.founded}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Founded : {house.founded}</p>
+                                            <b>Died out : </b>{house.diedOut}
                                         </Grid>
                                         <Grid item xs={6} className="book_infos">
-                                            <p>Died out : {house.diedOut}</p>
+                                            <b>Ancestral Weapons : </b>{house.ancestralWeapons}
                                         </Grid>
-                                        <Grid item xs={6} className="book_infos">
-                                            <p>Ancestral Weapons : {house.ancestralWeapons}</p>
-                                        </Grid>
-                                        <Grid item xs={6} className="book_infos">
-                                            <p>Cadet branches : {house.cadetBranches}</p>
+                                        <Grid item xs={6} className="book_infos" style={{height: 'fit-content'}}>
+                                            <b>Titles : </b>
+                                            <ul>
+                                                {house.titles.map((x) => (
+                                                    <li>{x}</li>
+                                                ))}
+                                            </ul>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -256,9 +271,7 @@ const HousesDetails = () => {
                                 <AccordionDetails>
                                     <List>
                                         {cadetBranches.map((c) => (
-                                            <ListItem>
-                                                <ListItemText>{c}</ListItemText>
-                                            </ListItem>
+                                            <ListItem>{c.name}</ListItem>
                                         ))}
                                     </List>
                                 </AccordionDetails>
@@ -274,7 +287,7 @@ const HousesDetails = () => {
                                     <List>
                                         {swornMembers.map((c) => (
                                             <ListItem>
-                                                <ListItemText>{c}</ListItemText>
+                                                <Link onClick={() => seeDetailsCharacter(c)}>{c.name}</Link>
                                             </ListItem>
                                         ))}
                                     </List>
@@ -285,7 +298,11 @@ const HousesDetails = () => {
                 </>
 
                 :
-                <p>Waiting...</p>
+                <Backdrop
+                    sx={{color: '#D8B600', zIndex: (theme) => theme.zIndex.drawer + 1}}
+                    open={open}>
+                    <CircularProgress color="inherit"/>
+                </Backdrop>
             }
 
         </div>
