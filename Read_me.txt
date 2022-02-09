@@ -14,7 +14,10 @@ UC2 : display the list of resource and for each, display a list that can be filt
   - Houses lists all houses, 48 houses per page, use the bottom pagination to change, only houses of the current page are loaded
   - Characters lists all characters, 48 houses per page, use the bottom pagination to change, only characters of the current page are loaded
   
-UC3 : Add a search bar for each resources
+UC3 : Add a search bar for each resources anything
+  - I don't have a global search 
+  - I tries to get all data and then make a reseach, but it was to long
+  - I don't think I had the good way to get it
 
 UC4 : get the details of each items
   - each item has a detail page
